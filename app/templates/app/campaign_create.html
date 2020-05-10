@@ -1,0 +1,34 @@
+{% extends 'app/base.html' %}
+
+{% block title %}Create campaign{% endblock %}
+
+{% block content %}
+    {% if ga_data %}
+        <form action="{% url 'campaign_submit' %}" method="post">
+            {% csrf_token %}
+            <label for="google_property">Choose a property:</label>
+            <select id="google_property" name="google_property">
+                {% for  item in ga_data.items %}
+                    <option value="{{ item.id }}"> {{ item.websiteUrl }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <label for="name">Name of campaign:</label>
+            <input type="text" id="name" name="name" maxlength="50" placeholder="crowdlink-awesome-campaign">
+            <br>
+            <label for="url">URL:</label>
+            <input type="url" id="url" name="url">
+            <br>
+            <label for="reward">Reward:</label>
+            <input type="number" id="reward" name="reward" value="1.0">
+            <br>
+            <input type="submit" value="Create">
+        </form>
+    {% else %}
+        <a class="btn btn-primary" href="{% url 'social:begin' 'google-oauth2' %}?next={% url 'campaign_create' %}">
+            Google Login
+        </a>
+
+    {% endif %}
+
+{% endblock content %}

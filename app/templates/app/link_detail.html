@@ -1,0 +1,41 @@
+{% extends 'app/base.html' %}
+
+{% block title %}Link detail +{% endblock %}
+
+{% block content %}
+    <h3>Link detail: {{ request.META.HTTP_HOST }}/{{ link_detail.url_code}}</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Key</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Url code</td>
+                <td>{{ link_detail.url_code }}</td>
+            </tr>
+            <tr>
+                <td>Long link</td>
+                <td>{{ link_detail.long_link }}</td>
+            </tr>
+            <tr>
+                <td>User public key</td>
+                <td>{{ link_detail.user_public_key }}</td>
+            </tr>
+            <tr>
+                <td>Created</td>
+                <td>{{ link_detail.created }}</td>
+            </tr>
+            <tr>
+                <td>Short link</td>
+                <td>
+                    <a href="//{{ request.META.HTTP_HOST }}/{{ link_detail.url_code}}">
+                        {{ request.META.HTTP_HOST }}/{{ link_detail.url_code}}
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock content %}

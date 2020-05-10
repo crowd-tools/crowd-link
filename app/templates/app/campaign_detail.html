@@ -1,0 +1,49 @@
+{% extends 'app/base.html' %}
+
+{% block title %}Campaign detail{% endblock %}
+
+
+{% block content %}
+    <h1>Campaign detail</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Key</th>
+            <th>Value</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Google property</td>
+            <td>{{ campaign_detail.google_property }}</td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>{{ campaign_detail.name }}</td>
+        </tr>
+        <tr>
+            <td>URL</td>
+            <td>{{ campaign_detail.url }}</td>
+        </tr>
+        </tbody>
+    </table>
+    {% if campaign_links %}
+        <ul>
+            {% for link in campaign_links %}
+                <li>
+                    <a href="//{{ request.META.HTTP_HOST }}/{{ link.url_code }}">
+                        {{ request.META.HTTP_HOST }}/{{ link.url_code }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <form action="{% url 'link_create' campaign_detail.id %}" method="post">
+            {% csrf_token %}
+            <label for="user_public_key">User public key</label>
+            <input type="text" name="user_public_key" id="user_public_key"
+                   value="0xa1f765189805e0e51Ac9753A9BC7d99e2B90c705">
+            <br>
+            <input type="submit" value="Create link" class="btn btn-primary">
+        </form>
+    {% endif %}
+{% endblock %}

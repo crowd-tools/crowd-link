@@ -1,0 +1,18 @@
+{% extends 'app/base.html' %}
+
+{% block title %}Link list{% endblock %}
+
+{% block content %}
+    <h1>Link list</h1>
+    <ul>
+        {% for link in link_list %}
+            <li>
+                <a href="{% url 'link_detail' link.id %}">{{ link.long_link }}</a>
+                &bullet;
+                <a href="//{{ request.META.HTTP_HOST }}/{{ link.url_code}}">
+                    {{ request.META.HTTP_HOST }}/{{ link.url_code}}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock content %}

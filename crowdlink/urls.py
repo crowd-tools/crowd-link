@@ -26,5 +26,6 @@ urlpatterns = [
         LogoutView.as_view(template_name=settings.LOGOUT_REDIRECT_URL),
         name='logout'
         ),
-    path('', include('app.urls'),)
+    path('', include('app.urls')),
+    path('api/', include('app.api_urls')),
 ]

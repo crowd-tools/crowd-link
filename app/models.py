@@ -19,7 +19,7 @@ class Link(models.Model):
     user_public_key = models.CharField('User public key', max_length=42)
 
     long_link = models.TextField('Long link')
-    url_code = models.CharField('URL code', blank=True, max_length=12)
+    url_code = models.CharField('URL code', unique=True, blank=True, max_length=12)
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:

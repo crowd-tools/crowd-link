@@ -11,9 +11,10 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+
+import environ
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
-import environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = environ.Path(__file__) - 2
@@ -52,10 +53,10 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {
   'access_type': 'offline'
 }
 
-LOGIN_URL = '/auth/login/google-oauth2/'
+LOGIN_URL = '/api/auth/login/google-oauth2/'
 
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/view/'
+LOGOUT_REDIRECT_URL = '/view/'
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
 # Application definition

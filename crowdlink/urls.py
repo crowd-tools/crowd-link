@@ -16,16 +16,10 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.contrib.auth.views import LogoutView
 from django.urls import path, include
 
 urlpatterns = [
     path(f'{settings.DJANGO_ADMIN_URL}/', admin.site.urls),
-    path(
-        'logout/',
-        LogoutView.as_view(template_name=settings.LOGOUT_REDIRECT_URL),
-        name='logout'
-        ),
     path('', include('app.urls')),
     path('api/', include('app.api_urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

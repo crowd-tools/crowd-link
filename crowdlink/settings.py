@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 import environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -72,6 +73,17 @@ INSTALLED_APPS = [
     'app',
     'rest_framework',
 ]
+
+SENTRY_DSN = env.str('SENTRY_DSN', default='')
+if SENTRY_DSN:
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration()],
+
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True
+    )
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -17,7 +17,7 @@ import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = environ.Path(__file__) - 2
+BASE_DIR = environ.Path(__file__) - 3
 
 ENV_FILE = os.path.join(BASE_DIR, '.env')
 
@@ -176,3 +176,6 @@ STATIC_ROOT = 'site/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+if os.path.exists('./local_settings.py'):
+    from .local_settings import *  # noqa

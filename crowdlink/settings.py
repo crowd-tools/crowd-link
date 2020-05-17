@@ -34,7 +34,7 @@ DEBUG = env('DEBUG')
 SECRET_KEY = env.str('SECRET_KEY')
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])
 
 # Social auth configuration
 
@@ -114,10 +114,7 @@ WSGI_APPLICATION = 'crowdlink.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'default': env.db(default=f"sqlite:////{os.path.join(BASE_DIR, 'db.sqlite3')}")
 }
 
 

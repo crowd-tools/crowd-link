@@ -7,7 +7,7 @@ from . import models
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = django_models.User
-        fields = ['self_url', 'username', 'email', 'groups']
+        fields = ['self_url', 'username', 'first_name', 'last_name', 'email', 'groups']
 
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):

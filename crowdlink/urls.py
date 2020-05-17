@@ -23,4 +23,3 @@ urlpatterns = [
     path('', include('app.urls')),
     path('api/', include('app.api_urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-

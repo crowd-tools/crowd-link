@@ -84,7 +84,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'crowdlink.urls'
-
+DJANGO_ADMIN_URL = env.str('DJANGO_ADMIN_URL', default='admin')
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

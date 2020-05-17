@@ -20,7 +20,7 @@ from django.contrib.auth.views import LogoutView
 from django.urls import path, include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path(f'{settings.DJANGO_ADMIN_URL}/', admin.site.urls),
     path('', include('social_django.urls', namespace='social')),
     path(
         'logout/',

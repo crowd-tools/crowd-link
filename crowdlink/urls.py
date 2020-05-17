@@ -21,7 +21,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path(f'{settings.DJANGO_ADMIN_URL}/', admin.site.urls),
-    path('', include('social_django.urls', namespace='social')),
     path(
         'logout/',
         LogoutView.as_view(template_name=settings.LOGOUT_REDIRECT_URL),

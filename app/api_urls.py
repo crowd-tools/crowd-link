@@ -11,6 +11,6 @@ router.register(r'links', api_views.LinkViewSet)
 
 
 urlpatterns = [
-    path('', include(router.urls), name='foo'),
-    path('auth/', include('rest_framework.urls'))
+    path('', include(router.urls)),
+    path('auth/', include('social_django.urls', namespace='social')),
 ]

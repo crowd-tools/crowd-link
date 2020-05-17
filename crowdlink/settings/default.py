@@ -177,5 +177,5 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-if os.path.exists('./local_settings.py'):
+if os.path.exists(environ.Path(__file__) - 1 + 'local_settings.py'):
     from .local_settings import *  # noqa

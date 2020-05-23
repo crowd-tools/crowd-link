@@ -12,15 +12,41 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class SaleCampaignSerializer(serializers.HyperlinkedModelSerializer):
+    links = serializers.SerializerMethodField('get_links')
+
     class Meta:
-        fields = ['self_url', 'name', 'user', 'url', 'reward', 'timestamp']
+        fields = ['self_url', 'name', 'user', 'url', 'reward', 'timestamp', 'links']
         model = models.SaleCampaign
+        read_only_fields = ['user']
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        validated_data.update({'user': user})
+        return super().create(validated_data)
+
+    def get_links(self, sale_campaign):
+        if 'user_public_key' in self.context['request'].GET:
+            user_public_key = self.context['request'].GET['user_public_key']
+            links = sale_campaign.links.filter(user_public_key=user_public_key)
+            serializer = SaleLinkSerializer(links, many=True, context=self.context)
+            return serializer.data
+        return []
 
 
 class ClickCampaignSerializer(serializers.HyperlinkedModelSerializer):
+    links = serializers.SerializerMethodField('get_links')
+
     class Meta:
-        fields = ['self_url', 'name', 'user_public_key', 'url', 'reward', 'timestamp']
+        fields = ['self_url', 'name', 'user_public_key', 'url', 'reward', 'timestamp', 'links']
         model = models.ClickCampaign
+
+    def get_links(self, sale_campaign):
+        if 'user_public_key' in self.context['request'].GET:
+            user_public_key = self.context['request'].GET['user_public_key']
+            links = sale_campaign.links.filter(user_public_key=user_public_key)
+            serializer = ClickLinkSerializer(links, many=True, context=self.context)
+            return serializer.data
+        return []
 
 
 class SaleLinkSerializer(serializers.HyperlinkedModelSerializer):

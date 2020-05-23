@@ -43,7 +43,7 @@ click_campaign_detail = api_views.ClickCampaignViewSet.as_view({
     'patch': 'partial_update',
 })
 
-click_campaign_detail_create_link = api_views.ClickCampaignViewSet.as_view({
+click_campaign_detail_create_link = api_views.ClickLinkViewSet.as_view({
     'post': 'create_link'
 })
 

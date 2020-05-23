@@ -29,6 +29,7 @@
       <div class="collapse navbar-collapse" id="navbarCollapse">
         {% if user.is_authenticated %}
           <ul class="navbar-nav ml-auto">
+            <li class="navbar-brand">{{ user.username }}</li>
             <li class="nav-item">
               <a class="nav-link dropdown-toggle" href="#" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 {{ user.email }}

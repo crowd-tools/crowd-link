@@ -10,4 +10,4 @@ class LinkModelAdmin(admin.ModelAdmin):
 
 @admin.register(models.Campaign)
 class CampaignModelAdmin(admin.ModelAdmin):
-    list_display = ('google_property', 'name', 'url', 'user')
+    list_display = ('name', 'url', 'user')

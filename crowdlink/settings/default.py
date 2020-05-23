@@ -33,7 +33,7 @@ DEBUG = env('DEBUG')
 
 
 # Raises django's ImproperlyConfigured exception if SECRET_KEY not in os.environ
-SECRET_KEY = env.str('SECRET_KEY')
+SECRET_KEY = env.str('SECRET_KEY', default='secret_key')
 
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])

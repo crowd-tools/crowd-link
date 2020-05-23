@@ -12,7 +12,7 @@ class OnBoardForm(forms.ModelForm):
     reward = forms.DecimalField(label='Reward', decimal_places=10, max_digits=18, initial=1)
 
     class Meta:
-        model = models.Campaign
+        model = models.ClickCampaign
         fields = ('google_property', 'name', 'url', 'reward')
 
     def __init__(self, user, *args, **kwargs):

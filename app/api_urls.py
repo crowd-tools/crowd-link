@@ -15,21 +15,39 @@ user_detail = api_views.UserViewSet.as_view({
     'get': 'retrieve',
 })
 
-campaign_list = api_views.CampaignViewSet.as_view({
+sale_campaign_list = api_views.SaleCampaignViewSet.as_view({
     'get': 'list',
     'post': 'create',
 })
 
-campaign_detail = api_views.CampaignViewSet.as_view({
+sale_campaign_detail = api_views.SaleCampaignViewSet.as_view({
     'get': 'retrieve',
     'patch': 'partial_update',
 })
 
-campaign_detail_create_link = api_views.CampaignViewSet.as_view({
+sale_campaign_detail_create_link = api_views.SaleLinkViewSet.as_view({
     'post': 'create_link'
 })
 
-link_detail = api_views.LinkViewSet.as_view({
+sale_link_detail = api_views.SaleLinkViewSet.as_view({
+    'get': 'retrieve'
+})
+
+click_campaign_list = api_views.ClickCampaignViewSet.as_view({
+    'get': 'list',
+    'post': 'create',
+})
+
+click_campaign_detail = api_views.ClickCampaignViewSet.as_view({
+    'get': 'retrieve',
+    'patch': 'partial_update',
+})
+
+click_campaign_detail_create_link = api_views.ClickCampaignViewSet.as_view({
+    'post': 'create_link'
+})
+
+click_link_detail = api_views.ClickLinkViewSet.as_view({
     'get': 'retrieve'
 })
 
@@ -50,10 +68,16 @@ schema_view = get_schema_view(
 urlpatterns = format_suffix_patterns([
     path('users/', user_list, name='user-list'),
     path('users/<int:pk>/', user_detail, name='user-detail'),
-    path('campaigns/', campaign_list, name='campaign-list'),
-    path('campaigns/<int:pk>/', campaign_detail, name='campaign-detail'),
-    path('campaigns/<int:pk>/create_link/', campaign_detail_create_link, name='campaign-detail-create-link'),
-    path('links/<int:pk>/', link_detail, name='link-detail'),
+
+    path('sale/campaigns/', sale_campaign_list, name='salecampaign-list'),
+    path('sale/campaigns/<int:pk>/', sale_campaign_detail, name='salecampaign-detail'),
+    path('sale/campaigns/<int:pk>/create_link/', sale_campaign_detail_create_link, name='salecampaign-detail-create-link'),
+    path('sale/links/<int:pk>/', sale_link_detail, name='salelink-detail'),
+
+    path('click/campaigns/', click_campaign_list, name='clickcampaign-list'),
+    path('click/campaigns/<int:pk>/', click_campaign_detail, name='clickcampaign-detail'),
+    path('click/campaigns/<int:pk>/create_link/', click_campaign_detail_create_link, name='clickcampaign-detail-create-link'),
+    path('click/links/<int:pk>/', click_link_detail, name='clicklink-detail'),
 ])
 
 urlpatterns += [

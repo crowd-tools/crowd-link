@@ -1,20 +1,22 @@
 import uuid
 
 from django.contrib.auth.models import User
+from django.core import validators
 from django.db import models
 
 
-class Campaign(models.Model):
+class AbstractCamping(models.Model):
     name = models.CharField('Campaign name', max_length=50, unique=True)
     url = models.URLField('Url of campaign')
     reward = models.DecimalField(default=1, decimal_places=10, max_digits=18)
-    user = models.ForeignKey(User, related_name='campaigns', blank=True, null=True, on_delete=models.SET_NULL)
     timestamp = models.DateTimeField(blank=True, auto_now_add=True)
 
+    class Meta:
+        abstract = True
 
-class Link(models.Model):
-    campaign = models.ForeignKey(Campaign, related_name='links', blank=True, on_delete=models.CASCADE)
-    user_public_key = models.CharField('User public key', max_length=42)
+
+class AbstractLink(models.Model):
+    user_public_key = models.CharField('User public key', max_length=42, validators=[validators.MinLengthValidator(42)])
 
     long_link = models.TextField('Long link')
     url_code = models.CharField('URL code', unique=True, blank=True, max_length=12)
@@ -22,8 +24,37 @@ class Link(models.Model):
 
     class Meta:
         unique_together = ('user_public_key', 'campaign')
+        abstract = True
 
     def save(self, *args, **kwargs):
         if not self.id and not self.url_code:
             self.url_code = str(uuid.uuid4())[:8]
         return super().save(*args, **kwargs)
+
+
+class SaleCampaign(AbstractCamping):
+    user = models.ForeignKey(User, related_name='campaigns', blank=True, null=True, on_delete=models.SET_NULL)
+
+    class Meta:
+        abstract = False
+
+
+class ClickCampaign(AbstractCamping):
+    user_public_key = models.CharField(max_length=42)
+
+    class Meta:
+        abstract = False
+
+
+class SaleLink(AbstractLink):
+    campaign = models.ForeignKey(SaleCampaign, related_name='links', blank=True, on_delete=models.CASCADE)
+
+    class Meta:
+        abstract = False
+
+
+class ClickLink(AbstractLink):
+    campaign = models.ForeignKey(ClickCampaign, related_name='links', blank=True, on_delete=models.CASCADE)
+
+    class Meta:
+        abstract = False

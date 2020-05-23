@@ -15,30 +15,30 @@ class IndexView(generic.TemplateView):
 class LinkListView(generic.ListView):
     template_name = 'app/link_list.html'
     context_object_name = 'link_list'
-    queryset = models.Link.objects.all()
+    queryset = models.ClickLink.objects.all()
 
 
 class LinkDetailView(generic.DetailView):
     template_name = 'app/link_detail.html'
     context_object_name = 'link_detail'
-    queryset = models.Link.objects.all()
+    queryset = models.ClickLink.objects.all()
 
 
 class CampaignListView(generic.ListView):
     template_name = 'app/campaign_list.html'
     context_object_name = 'campaign_list'
-    queryset = models.Campaign.objects.all()
+    queryset = models.ClickCampaign.objects.all()
 
 
 class CampaignDetailView(generic.DetailView):
     template_name = 'app/campaign_detail.html'
     context_object_name = 'campaign_detail'
-    queryset = models.Campaign.objects.all()
+    queryset = models.ClickCampaign.objects.all()
 
     def get_context_data(self, **kwargs):
         context = {}
         if self.request.user.is_authenticated:
-            campaign_links = models.Link.objects.filter(
+            campaign_links = models.ClickLink.objects.filter(
                 user=self.request.user,
                 campaign=self.object
             )
@@ -49,7 +49,7 @@ class CampaignDetailView(generic.DetailView):
 class CampaignView(generic.FormView):
     template_name = 'app/campaign_submit.html'
     context_object_name = 'campaign_detail'
-    queryset = models.Campaign.objects.all()
+    queryset = models.ClickCampaign.objects.all()
     success_url = '/campaigns'
 
     def get_form(self, form_class=forms.OnBoardForm):
@@ -63,7 +63,7 @@ class CampaignView(generic.FormView):
 
 
 def link_view(request, url_code):
-    link = get_object_or_404(models.Link, url_code=url_code)
+    link = get_object_or_404(models.ClickLink, url_code=url_code)
     return HttpResponseRedirect(
         redirect_to=f'{link.long_link}'
     )
@@ -72,10 +72,10 @@ def link_view(request, url_code):
 def link_create_view(request, pk):
     if request.method == 'POST' and request.user.is_authenticated:
         user_public_key = request.POST['user_public_key']
-        campaign = get_object_or_404(models.Campaign, pk=pk)
+        campaign = get_object_or_404(models.ClickCampaign, pk=pk)
         if not campaign.links.filter(user=request.user).exists():
             long_link = build_long_link(campaign, request, user_public_key)
-            models.Link.objects.create(
+            models.ClickLink.objects.create(
                 campaign=campaign,
                 user=request.user,
                 user_public_key=user_public_key,

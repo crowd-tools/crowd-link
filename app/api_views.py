@@ -25,38 +25,76 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
         return qs.order_by('-date_joined')
 
 
-class CampaignViewSet(viewsets.ModelViewSet):
+class CampaignViewSetMixin(viewsets.ModelViewSet):
     """
     API endpoint that allows campaigns to be viewed or edited.
     """
-    queryset = models.Campaign.objects.all().order_by('-timestamp')
-    serializer_class = serializers.CampaignSerializer
-    permission_classes = []  # TODO split for 2 campaigns PPC & PPS
+    pass
+
+
+class SaleCampaignViewSet(CampaignViewSetMixin):
+    queryset = models.SaleCampaign.objects.all().order_by('-timestamp')
+    serializer_class = serializers.SaleCampaignSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
+class ClickCampaignViewSet(CampaignViewSetMixin):
+    queryset = models.ClickCampaign.objects.all().order_by('-timestamp')
+    serializer_class = serializers.ClickCampaignSerializer
+    permission_classes = []
+
+
+class SaleLinkViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows links to be viewed or edited.
+    """
+    queryset = models.SaleLink.objects.all()
+    serializer_class = serializers.SaleLinkSerializer
+    permission_classes = []
 
     def create_link(self, request, pk, *args, **kwargs):
         if 'user_public_key' not in request.data:
             return Response({"error": "'user_public_key' is missing"}, status=400)
         user_public_key = request.data['user_public_key']
 
-        instance = self.get_object()
+        instance = models.SaleCampaign.objects.get(pk=pk)
         try:
             link = instance.links.get(user_public_key=user_public_key)
-        except models.Link.DoesNotExist:
+        except models.SaleLink.DoesNotExist:
             long_link = build_long_link(instance, request, user_public_key)
-            link = models.Link.objects.create(
+            link = models.SaleLink.objects.create(
                 campaign=instance,
                 user_public_key=user_public_key,
                 long_link=long_link,
             )
 
-        serializer = serializers.LinkSerializer(link, context={'request': request})
+        serializer = serializers.SaleLinkSerializer(link, context={'request': request})
         return Response(serializer.data)
 
 
-class LinkViewSet(viewsets.ModelViewSet):
+class ClickLinkViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows links to be viewed or edited.
     """
-    queryset = models.Link.objects.all()
-    serializer_class = serializers.LinkSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    queryset = models.ClickLink.objects.all()
+    serializer_class = serializers.ClickLinkSerializer
+    permission_classes = []
+
+    def create_link(self, request, pk, *args, **kwargs):
+        if 'user_public_key' not in request.data:
+            return Response({"error": "'user_public_key' is missing"}, status=400)
+        user_public_key = request.data['user_public_key']
+
+        instance = models.ClickCampaign.objects.get(pk=pk)
+        try:
+            link = instance.links.get(user_public_key=user_public_key)
+        except models.ClickLink.DoesNotExist:
+            long_link = build_long_link(instance, request, user_public_key)
+            link = models.ClickLink.objects.create(
+                campaign=instance,
+                user_public_key=user_public_key,
+                long_link=long_link,
+            )
+
+        serializer = serializers.ClickLinkSerializer(link, context={'request': request})
+        return Response(serializer.data)

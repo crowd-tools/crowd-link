@@ -112,7 +112,7 @@ class GoogleAnalyticsViewSet(views.APIView):
             )
             data = client.get_goal_value(
                 view_id=campaign.google_view_id,
-                start_date=campaign.timestamp.strftime("%Y-%m-%d"),
+                start_date=campaign.started.strftime("%Y-%m-%d"),
             )
             serializer = serializers.GoogleAnalyticsSerializer(data, many=True)
             return Response(serializer.data)

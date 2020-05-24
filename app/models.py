@@ -10,6 +10,7 @@ class AbstractCamping(models.Model):
     url = models.URLField('Url of campaign')
     reward = models.DecimalField(default=1, decimal_places=10, max_digits=18)
     timestamp = models.DateTimeField(blank=True, auto_now_add=True)
+    started = models.DateField('Campaign start date', auto_now_add=True)
 
     class Meta:
         abstract = True

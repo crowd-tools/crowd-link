@@ -6,10 +6,10 @@
     {% if ga_data %}
         <form action="{% url 'campaign_submit' %}" method="post">
             {% csrf_token %}
-            <label for="google_property">Choose a property:</label>
-            <select id="google_property" name="google_property">
+            <label for="google_view_id">Choose a property:</label>
+            <select id="google_view_id" name="google_view_id">
                 {% for  item in ga_data.items %}
-                    <option value="{{ item.id }}"> {{ item.websiteUrl }}</option>
+                    <option value="ga:{{ item.defaultProfileId }}"> {{ item.websiteUrl }}</option>
                 {% endfor %}
             </select>
             <br>

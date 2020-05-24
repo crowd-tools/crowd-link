@@ -11,7 +11,7 @@ class OnBoardForm(forms.ModelForm):
 
     class Meta:
         model = models.SaleCampaign
-        fields = ('name', 'url', 'reward')
+        fields = ('name', 'url', 'reward', 'google_view_id')
 
     def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)

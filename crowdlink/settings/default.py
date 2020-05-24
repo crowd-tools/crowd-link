@@ -135,6 +135,8 @@ REST_FRAMEWORK = {
     'URL_FIELD_NAME': 'self_url',
 }
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 WSGI_APPLICATION = 'crowdlink.wsgi.application'
 
 

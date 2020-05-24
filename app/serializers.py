@@ -1,6 +1,5 @@
 from django.contrib.auth import models as django_models
 from rest_framework import serializers
-from rest_framework.fields import empty
 
 from . import models
 

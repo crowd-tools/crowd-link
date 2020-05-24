@@ -1,11 +1,22 @@
+import json
 import requests
+
+from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.urls import reverse
 from django.views import generic
+from web3 import Web3, HTTPProvider
+from web3.middleware import geth_poa_middleware
 
-from . import models, forms
+from . import models, forms, contract
+
+
+w3 = Web3(Web3.HTTPProvider(settings.INFURA_ROPSTEN_ENDPOINT))
+contract_spec = json.loads(contract.abi)
+contract_abi = contract_spec["abi"]
+contract_instance = w3.eth.contract(abi=contract_abi, address=settings.CONTRACT_INSTANCE_ADDRESS)
 
 
 class IndexView(generic.TemplateView):
@@ -60,8 +71,30 @@ class CampaignView(generic.FormView):
         return super().form_valid(form)
 
 
-def link_view(request, url_code):
+def sale_link_view(request, url_code):
     link = get_object_or_404(models.SaleLink, url_code=url_code)
+    return HttpResponseRedirect(
+        redirect_to=f'{link.long_link}'
+    )
+
+
+def click_link_view(request, url_code):
+    link = get_object_or_404(models.ClickLink, url_code=url_code)
+    transaction = contract_instance.functions.forwardPayPerClickRewards(
+        url_code,
+        link.campaign.url,
+        link.campaign.user_public_key,
+        link.user_public_key
+    ).buildTransaction({
+        'chainId': 3,
+        'gas': 120000,
+        'gasPrice': w3.toWei('1', 'gwei'),
+        'nonce': w3.eth.getTransactionCount(settings.ACCOUNT_OWNER_PUBLIC_KEY)}
+    )
+
+    txn_signed = w3.eth.account.signTransaction(transaction, private_key=settings.ACCOUNT_OWNER_PRIVATE_KEY)
+    txn_hash = w3.eth.sendRawTransaction(txn_signed.rawTransaction)
+
     return HttpResponseRedirect(
         redirect_to=f'{link.long_link}'
     )

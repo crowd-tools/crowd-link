@@ -110,7 +110,10 @@ class GoogleAnalyticsViewSet(views.APIView):
                 access_token=social_auth.extra_data['access_token'],
                 refresh_token=social_auth.extra_data.get('refresh_token')
             )
-            data = client.get_goal_value(campaign.google_view_id)
+            data = client.get_goal_value(
+                view_id=campaign.google_view_id,
+                start_date=campaign.timestamp.strftime("%Y-%m-%d"),
+            )
             serializer = serializers.GoogleAnalyticsSerializer(data, many=True)
             return Response(serializer.data)
         # This should not happen (let Sentry inform us)

@@ -31,8 +31,8 @@
         <ul>
             {% for link in campaign_links %}
                 <li>
-                    <a href="{% url 'link_view' link.url_code %}">
-                        {{ request.META.HTTP_HOST }}{% url 'link_view' link.url_code %}
+                    <a href="{% url 'salelink_view' link.url_code %}">
+                        {{ request.META.HTTP_HOST }}{% url 'salelink_view' link.url_code %}
                     </a>
                 </li>
             {% endfor %}

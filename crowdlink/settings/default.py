@@ -43,7 +43,7 @@ ACCOUNT_OWNER_PRIVATE_KEY = env.str('ACCOUNT_OWNER_PRIVATE_KEY', default='owner_
 
 ACCOUNT_OWNER_PUBLIC_KEY = env.str('ACCOUNT_OWNER_PUBLIC_KEY', default='0x' + '0' * 40)
 
-CONTRACT_INSTANCE_ADDRESS = env.str('CONTRACT_INSTANCE_ADDRESS', default='contract_instance_address')
+CONTRACT_INSTANCE_ADDRESS = env.str('CONTRACT_INSTANCE_ADDRESS', default='0x' + '0' * 40)
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])
 

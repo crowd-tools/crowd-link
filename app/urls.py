@@ -13,5 +13,6 @@ urlpatterns = [
     path('view/campaigns', views.campaign_list_view, name='campaign_list'),
     path('view/campaign/<int:pk>', views.campaign_detail_view, name='campaign_detail'),
     path('view/logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('l/<str:url_code>', views.link_view, name='link_view'),
+    path('sl/<str:url_code>', views.sale_link_view, name='salelink_view'),
+    path('cl/<str:url_code>', views.click_link_view, name='clicklink_view'),
 ]

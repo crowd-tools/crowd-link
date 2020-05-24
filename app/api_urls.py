@@ -25,6 +25,8 @@ sale_campaign_detail = api_views.SaleCampaignViewSet.as_view({
     'patch': 'partial_update',
 })
 
+sale_campaign_detail_google_analytics = api_views.GoogleAnalyticsViewSet.as_view()
+
 sale_campaign_detail_create_link = api_views.SaleLinkViewSet.as_view({
     'post': 'create_link'
 })
@@ -72,6 +74,7 @@ urlpatterns = format_suffix_patterns([
     path('sale/campaigns/', sale_campaign_list, name='salecampaign-list'),
     path('sale/campaigns/<int:pk>/', sale_campaign_detail, name='salecampaign-detail'),
     path('sale/campaigns/<int:pk>/create_link/', sale_campaign_detail_create_link, name='salecampaign-detail-create-link'),
+    path('sale/campaigns/<int:pk>/google_analytics/', sale_campaign_detail_google_analytics, name='salecampaign-detail-google-analytics'),
     path('sale/links/<int:pk>/', sale_link_detail, name='salelink-detail'),
 
     path('click/campaigns/', click_campaign_list, name='clickcampaign-list'),

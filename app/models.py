@@ -34,27 +34,17 @@ class AbstractLink(models.Model):
 
 class SaleCampaign(AbstractCamping):
     user = models.ForeignKey(User, related_name='campaigns', blank=True, null=True, on_delete=models.SET_NULL)
-
-    class Meta:
-        abstract = False
+    user_public_key = models.CharField('User public key', max_length=42, validators=[validators.MinLengthValidator(42)])
+    google_view_id = models.CharField('Google View ID', max_length=15)
 
 
 class ClickCampaign(AbstractCamping):
-    user_public_key = models.CharField(max_length=42)
-
-    class Meta:
-        abstract = False
+    user_public_key = models.CharField('User public key', max_length=42, validators=[validators.MinLengthValidator(42)])
 
 
 class SaleLink(AbstractLink):
     campaign = models.ForeignKey(SaleCampaign, related_name='links', blank=True, on_delete=models.CASCADE)
 
-    class Meta:
-        abstract = False
-
 
 class ClickLink(AbstractLink):
     campaign = models.ForeignKey(ClickCampaign, related_name='links', blank=True, on_delete=models.CASCADE)
-
-    class Meta:
-        abstract = False

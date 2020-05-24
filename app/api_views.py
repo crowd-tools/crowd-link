@@ -1,9 +1,10 @@
 from django.contrib.auth import models as django_models
-from rest_framework import permissions
+from django.shortcuts import get_object_or_404
+from rest_framework import permissions, views
 from rest_framework import viewsets
 from rest_framework.response import Response
 
-from . import models, serializers
+from . import models, serializers, google_client
 from .views import build_long_link
 
 
@@ -98,3 +99,18 @@ class ClickLinkViewSet(viewsets.ModelViewSet):
 
         serializer = serializers.ClickLinkSerializer(link, context={'request': request})
         return Response(serializer.data)
+
+
+class GoogleAnalyticsViewSet(views.APIView):
+    def get(self, request, pk):
+        campaign = get_object_or_404(models.SaleCampaign, pk=pk)
+        if hasattr(campaign.user, 'social_auth'):
+            social_auth = campaign.user.social_auth.last()
+            client = google_client.GoogleAnalyticsClient(
+                access_token=social_auth.extra_data['access_token'],
+                refresh_token=social_auth.extra_data.get('refresh_token')
+            )
+            data = client.get_goal_value(campaign.google_view_id)
+            serializer = serializers.GoogleAnalyticsSerializer(data, many=True)
+            return Response(serializer.data)
+        # This should not happen (let Sentry inform us)

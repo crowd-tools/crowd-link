@@ -15,7 +15,7 @@ class SaleCampaignSerializer(serializers.HyperlinkedModelSerializer):
     links = serializers.SerializerMethodField('get_links')
 
     class Meta:
-        fields = ['self_url', 'name', 'user', 'url', 'reward', 'timestamp', 'links']
+        fields = ['self_url', 'name', 'user', 'url', 'reward', 'timestamp', 'links', 'google_view_id']
         model = models.SaleCampaign
         read_only_fields = ['user']
 
@@ -62,3 +62,16 @@ class ClickLinkSerializer(serializers.HyperlinkedModelSerializer):
         model = models.ClickLink
         fields = ['self_url', 'user_public_key', 'long_link', 'url_code', 'created']
         read_only_fields = ['long_link', 'url_code']
+
+
+class GoogleAnalyticsSerializer(serializers.Serializer):
+    medium = serializers.CharField()
+    source = serializers.CharField()
+    campaign = serializers.CharField()
+    value = serializers.DecimalField(max_digits=10, decimal_places=2)
+
+    def update(self, instance, validated_data):
+        pass
+
+    def create(self, validated_data):
+        pass

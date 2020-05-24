@@ -3,6 +3,7 @@ import uuid
 from django.contrib.auth.models import User
 from django.core import validators
 from django.db import models
+from django.utils import timezone
 
 
 class AbstractCamping(models.Model):
@@ -10,7 +11,7 @@ class AbstractCamping(models.Model):
     url = models.URLField('Url of campaign')
     reward = models.DecimalField(default=1, decimal_places=10, max_digits=18)
     timestamp = models.DateTimeField(blank=True, auto_now_add=True)
-    started = models.DateField('Campaign start date', auto_now_add=True)
+    started = models.DateField('Campaign start date', default=timezone.now)
 
     class Meta:
         abstract = True

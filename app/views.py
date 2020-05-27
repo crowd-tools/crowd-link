@@ -87,7 +87,7 @@ def click_link_view(request, url_code):
         link.user_public_key
     ).buildTransaction({
         'chainId': 3,
-        'gas': 120000,
+        'gas': 320000,
         'gasPrice': w3.toWei('1', 'gwei'),
         'nonce': w3.eth.getTransactionCount(settings.ACCOUNT_OWNER_PUBLIC_KEY)}
     )

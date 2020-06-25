@@ -7,8 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.urls import reverse
 from django.views import generic
-from web3 import Web3, HTTPProvider
-from web3.middleware import geth_poa_middleware
+from web3 import Web3
 
 from . import models, forms, contract
 
@@ -93,7 +92,7 @@ def click_link_view(request, url_code):
     )
 
     txn_signed = w3.eth.account.signTransaction(transaction, private_key=settings.ACCOUNT_OWNER_PRIVATE_KEY)
-    txn_hash = w3.eth.sendRawTransaction(txn_signed.rawTransaction)
+    w3.eth.sendRawTransaction(txn_signed.rawTransaction)  # thx_hash
 
     return HttpResponseRedirect(
         redirect_to=f'{link.long_link}'

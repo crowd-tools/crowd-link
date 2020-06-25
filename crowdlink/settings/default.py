@@ -35,10 +35,10 @@ DEBUG = env('DEBUG')
 # Raises django's ImproperlyConfigured exception if SECRET_KEY not in os.environ
 SECRET_KEY = env.str('SECRET_KEY', default='secret_key')
 
-#infura node's https endpoint on ropsten
+# Infura node's https endpoint on ropsten
 INFURA_ROPSTEN_ENDPOINT = env.str('INFURA_ROPSTEN_ENDPOINT', default='http://example.com/')
 
-#private key used to deploy the contract
+# Private key used to deploy the contract
 ACCOUNT_OWNER_PRIVATE_KEY = env.str('ACCOUNT_OWNER_PRIVATE_KEY', default='owner_private_key')
 
 ACCOUNT_OWNER_PUBLIC_KEY = env.str('ACCOUNT_OWNER_PUBLIC_KEY', default='0x' + '0' * 40)

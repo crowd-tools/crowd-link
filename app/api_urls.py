@@ -2,6 +2,7 @@ from django.conf.urls import url
 from django.urls import include, path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
+from graphene_django.views import GraphQLView
 from rest_framework import permissions
 from rest_framework.urlpatterns import format_suffix_patterns
 
@@ -81,6 +82,8 @@ urlpatterns = format_suffix_patterns([
     path('click/campaigns/<int:pk>/', click_campaign_detail, name='clickcampaign-detail'),
     path('click/campaigns/<int:pk>/create_link/', click_campaign_detail_create_link, name='clickcampaign-detail-create-link'),
     path('click/links/<int:pk>/', click_link_detail, name='clicklink-detail'),
+
+    path(r'graphql/', GraphQLView.as_view(graphiql=True)),
 ])
 
 urlpatterns += [

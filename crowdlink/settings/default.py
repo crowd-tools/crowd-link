@@ -81,6 +81,7 @@ INSTALLED_APPS = [
 
     'social_django',
     'drf_yasg',
+    'graphene_django',
 
     'app',
     'rest_framework',
@@ -124,6 +125,10 @@ TEMPLATES = [
         },
     },
 ]
+
+GRAPHENE = {
+    'SCHEMA': 'crowdlink.schema.schema',
+}
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',

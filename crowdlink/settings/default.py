@@ -13,8 +13,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 
 import environ
-import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = environ.Path(__file__) - 3
@@ -31,6 +29,9 @@ environ.Env.read_env(env_file=ENV_FILE)
 # False if not in os.environ
 DEBUG = env('DEBUG')
 
+ENVIRONMENT = env('ENVIRONMENT', default='local').lower()
+
+assert ENVIRONMENT in ('local', 'staging', 'production')
 
 # Raises django's ImproperlyConfigured exception if SECRET_KEY not in os.environ
 SECRET_KEY = env.str('SECRET_KEY', default='secret_key')
@@ -89,13 +90,15 @@ INSTALLED_APPS = [
 
 SENTRY_DSN = env.str('SENTRY_DSN', default='')
 if SENTRY_DSN:
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
     sentry_sdk.init(
         dsn=SENTRY_DSN,
         integrations=[DjangoIntegration()],
-
+        environment=ENVIRONMENT,
         # If you wish to associate users to errors (assuming you are using
         # django.contrib.auth) you may enable sending PII data.
-        send_default_pii=True
+        send_default_pii=True,
     )
 
 MIDDLEWARE = [

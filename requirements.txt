@@ -1,4 +1,4 @@
-Django==3.0.7
+Django==3.0.14
 social-auth-app-django==4.0.0
 google-api-python-client==1.9.3
 djangorestframework==3.11.0
